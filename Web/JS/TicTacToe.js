@@ -1,2 +1,17 @@
-// It's just a test...
-document.getElementById("1").innerHTML = "1";
+class Oxo {
+
+    constructor() {
+        this.case = document.getElementsByClassName("box");
+    }
+
+    touchACase() {
+        let self = this;
+        this.case.addEventListener("click", function () {
+            self.case.innerHTML = "X";
+        });
+    }
+}
+
+let TTT = new Oxo;
+TTT.touchACase();
+
