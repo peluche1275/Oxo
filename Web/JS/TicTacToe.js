@@ -1,17 +1,27 @@
-class Oxo {
+class TicTacToe {
 
     constructor() {
-        this.case = document.getElementsByClassName("box");
+
+        this.gridBoxes = document.getElementsByClassName("box");
+
     }
 
-    touchACase() {
+    touchGridBoxes() {
+
         let self = this;
-        this.case.addEventListener("click", function () {
-            self.case.innerHTML = "X";
-        });
+
+        for (let i = 0; i < 9; i++) {
+
+            let boxSelected = self.gridBoxes.item(i);
+            
+            boxSelected.addEventListener("click", function () {
+                boxSelected.innerHTML = "X";
+            });
+
+        }
     }
 }
 
-let TTT = new Oxo;
-TTT.touchACase();
+let Oxo = new TicTacToe;
+Oxo.touchGridBoxes();
 
