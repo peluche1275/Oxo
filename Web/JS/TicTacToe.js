@@ -15,6 +15,19 @@ class TicTacToe {
 
         this.restartGame();
 
+        this.test();
+
+    }
+
+
+    test(){
+        var arr = new Array(3);
+            for (var i = 0; i < 3; i++) {
+                arr[i] = new Array(3);
+                for (var j = 0; j < 3; j++)
+                    arr[i][j] = (i * 3) + j ;
+        }
+        console.log(arr)
     }
 
     playerTouchGridBoxes() {
@@ -34,24 +47,49 @@ class TicTacToe {
         }
     }
 
+    checkWinner() {
+
+        let possiblities = [0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 3, 6, 1, 4, 7, 2, 5, 8, 0, 4, 8, 2, 4, 6];
+
+        for (var i = 0; i < 24; i += 3) {
+
+            if (this.gridBoxes.item(possiblities[i]).innerHTML == 'X' && this.gridBoxes.item(possiblities[i + 1]).innerHTML == 'X' && this.gridBoxes.item(possiblities[i + 2]).innerHTML == 'X') {
+                console.log("YES !")
+            }
+
+            if (this.gridBoxes.item(possiblities[i]).innerHTML == 'O' && this.gridBoxes.item(possiblities[i + 1]).innerHTML == 'O' && this.gridBoxes.item(possiblities[i + 2]).innerHTML == 'O') {
+                console.log("NOPE !")
+            }
+
+        }
+    }
+
     drawTheSymbolInTheBox(box, whoDraw) {
 
         if (box.innerHTML == "") {
 
             if (whoDraw == "player") {
+
                 box.innerHTML = "X"
                 console.log("Le joueur à jouer !")
+                this.checkWinner()
                 this.logicComputer(box.idIndex);
+
             }
 
             else {
+
                 box.innerHTML = "O"
                 console.log("L'ordinateur à jouer !")
+                this.checkWinner()
+                console.log("A TOI DE JOUER !")
+
             }
 
         }
 
     }
+
 
     logicComputer(boxId) {
         let turn = "this.turn" + this.turn + "(" + boxId + ")";
@@ -65,40 +103,55 @@ class TicTacToe {
         }
     }
 
-    turn1(numberOfTheBox) {    
+    turn1(numberOfTheBox) {
+
         if (this.checkNumberInArray([0, 2, 6, 8], numberOfTheBox) || numberOfTheBox == 0) {
-            this.gridBoxes.item(4).innerHTML = "O";
+
+            this.drawTheSymbolInTheBox(this.gridBoxes.item(4), "computer");
+
 
         } else if (numberOfTheBox == 1) {
 
-            this.gridBoxes.item(2).innerHTML = "O";
+            this.drawTheSymbolInTheBox(this.gridBoxes.item(2), "computer");
+
 
         } else if (numberOfTheBox == 3) {
 
-            this.gridBoxes.item(0).innerHTML = "O";
+            this.drawTheSymbolInTheBox(this.gridBoxes.item(0), "computer");
+
 
         } else if (numberOfTheBox == 5) {
 
-            this.gridBoxes.item(8).innerHTML = "O";
+            this.drawTheSymbolInTheBox(this.gridBoxes.item(8), "computer");
 
-        }else if (this.checkNumberInArray([7,4], numberOfTheBox)) {
 
-            this.gridBoxes.item(6).innerHTML = "O";
+        } else if (this.checkNumberInArray([7, 4], numberOfTheBox)) {
+
+            this.drawTheSymbolInTheBox(this.gridBoxes.item(6), "computer");
+
         }
+
     }
 
     turn2() {
         console.log("Tour 2 de l'ordinateur")
+
     }
 
     turn3() {
         console.log("Tour 3 de l'ordinateur")
+
     }
 
     turn4() {
         console.log("Tour 4 de l'ordinateur")
+
     }
 
+    turn5() {
+        console.log("DRAW")
+
+    }
 
     restartGame() {
 
@@ -111,6 +164,6 @@ class TicTacToe {
     }
 }
 
-let Oxo = new TicTacToe;
-Oxo.run();
+let oxo = new TicTacToe;
+oxo.run();
 
