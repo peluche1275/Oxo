@@ -10,13 +10,13 @@ class TicTacToe {
 
     run() {
 
-        this.touchGridBoxes();
+        this.playerTouchGridBoxes();
 
         this.restartGame();
 
     }
 
-    touchGridBoxes() {
+    playerTouchGridBoxes() {
 
         let self = this;
 
@@ -25,11 +25,26 @@ class TicTacToe {
             let boxSelected = self.gridBoxes.item(i);
 
             boxSelected.addEventListener("click", function () {
-                boxSelected.innerHTML = "X";
+                self.drawTheSymbolinTheBox(boxSelected, "player");
             });
 
         }
     }
+
+    drawTheSymbolinTheBox(box, who) {
+
+        if (box.innerHTML == "") {
+            if (who == "player") {
+                box.innerHTML = "X"
+            }
+            else {
+                box.innerHTML = "O"
+            }
+        }
+
+    }
+
+
 
     restartGame() {
 
