@@ -24,6 +24,7 @@ class TicTacToe {
 
     }
 
+
     playerTouchGridBoxes() {
 
         let self = this;
@@ -33,10 +34,25 @@ class TicTacToe {
             let boxSelected = self.gridBoxes.item(i);
 
             boxSelected.addEventListener("click", function () {
-                boxSelected.idIndex = i;
+
                 self.drawTheSymbolInTheBox(boxSelected, "player");
 
             });
+
+        }
+    }
+
+    checkRow(i, symbol) {
+
+        if (this.gridBoxes.item(this.possiblities[i]).innerHTML == symbol &&
+            this.gridBoxes.item(this.possiblities[i + 1]).innerHTML == symbol &&
+            this.gridBoxes.item(this.possiblities[i + 2]).innerHTML == symbol) {
+
+            return true
+
+        } else {
+
+            return false
 
         }
     }
@@ -45,16 +61,18 @@ class TicTacToe {
 
         for (let i = 0; i < 24; i += 3) {
 
-            if (this.gridBoxes.item(this.possiblities[i]).innerHTML == 'X' &&
-                this.gridBoxes.item(this.possiblities[i + 1]).innerHTML == 'X' &&
-                this.gridBoxes.item(this.possiblities[i + 2]).innerHTML == 'X') {
+            if (this.checkRow(i, "X")) {
+
                 this.message.innerHTML = "WIN !"
-            } else if (this.gridBoxes.item(this.possiblities[i]).innerHTML == 'O' &&
-                this.gridBoxes.item(this.possiblities[i + 1]).innerHTML == 'O' &&
-                this.gridBoxes.item(this.possiblities[i + 2]).innerHTML == 'O') {
+
+            } else if (this.checkRow(i, "O")) {
+
                 this.message.innerHTML = "LOST !"
+
             } else if (!this.countBoxEmpty()) {
+
                 this.message.innerHTML = "DRAW !"
+
             }
 
         }
@@ -64,14 +82,15 @@ class TicTacToe {
 
         let self = this;
 
-        if (box.innerHTML == "") {
+        if (box.innerHTML == "" && this.message.innerHTML == "") {
 
             if (whoDraw == "player") {
 
                 box.innerHTML = "X"
                 box.style.color = "#1abc9c"
                 this.checkWinner()
-                setTimeout(function () { self.logicComputer() }, 300);
+                setTimeout(function () { self.computerChoosesStrategy() }, 300);
+                
             }
 
             else {
@@ -86,22 +105,20 @@ class TicTacToe {
 
     }
 
+    computerChoosesStrategy() {
 
-    logicComputer() {
-        let CompleteARow = "O"
-        let BreakPlayerRow = "X"
-
-        if (this.completeRow(CompleteARow)) {
+        if (this.completeOrBreakARow("O")) {
 
         }
-        else if (this.completeRow(BreakPlayerRow)) {
+        
+        else if (this.completeOrBreakARow("X")) {
 
         }
+
         else { this.randomChoice() };
     }
 
-    completeRow(symbol) {
-
+    completeOrBreakARow(symbol) {
 
         for (let i = 0; i < 24; i += 3) {
 
@@ -132,12 +149,18 @@ class TicTacToe {
     }
 
     countBoxEmpty() {
+
         let occurencies = 0;
+
         for (let i = 0; i < 9; i++) {
+
             if (this.gridBoxes.item(i).innerHTML == '') {
+
                 occurencies++;
+
             }
         }
+
         return occurencies;
     }
 
@@ -148,13 +171,19 @@ class TicTacToe {
         while (findABoxEmpty == false) {
 
             if (this.countBoxEmpty()) {
-                let random = this.getRandomInteger()
+
+                let random = this.getRandomInteger();
+
                 if (this.gridBoxes.item(random).innerHTML == '') {
                     this.drawTheSymbolInTheBox(this.gridBoxes.item(random, "computer"));
                     findABoxEmpty = true;
+
                 }
+
             } else {
+
                 findABoxEmpty = true;
+
             }
 
         }
