@@ -10,7 +10,8 @@ body{
     display: flex;
     justify-content: space-around;
     flex-direction: column;
-    margin: 0 auto;
+	margin: 0 auto;
+	font-family: 'Quicksand', sans-serif;
 }
 
 .row{
@@ -28,6 +29,7 @@ body{
 	color: #121212;
 	font-size: 22px;
 	font-weight: 800;
+	
 }
 
 .vertical{
@@ -40,14 +42,18 @@ body{
     border-bottom: 4px solid #2980b9;
 }
 
+h1{
+	font-family: 'Kaushan Script', cursive;
+}
+
 #message{
 	font-size: 26px;
 	font-weight: 800;
 	animation: nimate 3s linear infinite;
 	width: 300px;
 	text-align: center;
-	margin-top: 20px;
-	font-family: "Times New Roman", Times, serif;
+	margin: 0 auto;
+	margin-top: 30px;
 }
 
 button{

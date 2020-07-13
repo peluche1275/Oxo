@@ -4,8 +4,8 @@ class TicTacToe {
 
         this.gridBoxes = document.getElementsByClassName("box");
         this.buttonRestart = document.getElementById("restart");
+        this.message = document.getElementById("message");
         this.location = document.location;
-        this.turn = "1";
         this.possiblities = [0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 3, 6, 1, 4, 7, 2, 5, 8, 0, 4, 8, 2, 4, 6];
 
     }
@@ -43,19 +43,18 @@ class TicTacToe {
 
     checkWinner() {
 
-
         for (let i = 0; i < 24; i += 3) {
 
             if (this.gridBoxes.item(this.possiblities[i]).innerHTML == 'X' &&
                 this.gridBoxes.item(this.possiblities[i + 1]).innerHTML == 'X' &&
                 this.gridBoxes.item(this.possiblities[i + 2]).innerHTML == 'X') {
-                console.log("YES !")
-            }
-
-            if (this.gridBoxes.item(this.possiblities[i]).innerHTML == 'O' &&
+                this.message.innerHTML = "WIN !"
+            } else if (this.gridBoxes.item(this.possiblities[i]).innerHTML == 'O' &&
                 this.gridBoxes.item(this.possiblities[i + 1]).innerHTML == 'O' &&
                 this.gridBoxes.item(this.possiblities[i + 2]).innerHTML == 'O') {
-                console.log("NOPE !")
+                this.message.innerHTML = "LOST !"
+            } else if (!this.countBoxEmpty()) {
+                this.message.innerHTML = "DRAW !"
             }
 
         }
@@ -63,23 +62,23 @@ class TicTacToe {
 
     drawTheSymbolInTheBox(box, whoDraw) {
 
+        let self = this;
+
         if (box.innerHTML == "") {
 
             if (whoDraw == "player") {
 
                 box.innerHTML = "X"
-                console.log("Le joueur à jouer !")
+                box.style.color = "#1abc9c"
                 this.checkWinner()
-                this.logicComputer();
-                
+                setTimeout(function () { self.logicComputer() }, 300);
             }
 
             else {
 
                 box.innerHTML = "O"
-                console.log("L'ordinateur à jouer !")
+                box.style.color = "#e67e22"
                 this.checkWinner()
-                console.log("A TOI DE JOUER !")
 
             }
 
@@ -92,20 +91,24 @@ class TicTacToe {
         let CompleteARow = "O"
         let BreakPlayerRow = "X"
 
-        
-        this.completeRow(CompleteARow);
-        this.completeRow(BreakPlayerRow);
-        this.randomChoice();
+        if (this.completeRow(CompleteARow)) {
+
+        }
+        else if (this.completeRow(BreakPlayerRow)) {
+
+        }
+        else { this.randomChoice() };
     }
 
     completeRow(symbol) {
+
 
         for (let i = 0; i < 24; i += 3) {
 
             for (let j = 0; j < 3; j++) {
 
                 for (let k = 0; k < 3; k++) {
-                    
+
                     if (j != k &&
                         this.gridBoxes.item(this.possiblities[i + j]).innerHTML == symbol &&
                         this.gridBoxes.item(this.possiblities[i + k]).innerHTML == symbol) {
@@ -115,17 +118,12 @@ class TicTacToe {
                             if (l != j && l != k &&
                                 this.gridBoxes.item(this.possiblities[i + l]).innerHTML == '') {
 
-                                this.gridBoxes.item(this.possiblities[i + l]).innerHTML = 'O';
-                                return true;
+                                this.drawTheSymbolInTheBox(this.gridBoxes.item(this.possiblities[i + l], "computer"));
+
+                                return true
 
                             }
                         }
-
-                    } else {
-                        console.log('nope!')
-                        return false;
-                        
-                        
 
                     }
                 }
@@ -133,27 +131,30 @@ class TicTacToe {
         }
     }
 
+    countBoxEmpty() {
+        let occurencies = 0;
+        for (let i = 0; i < 9; i++) {
+            if (this.gridBoxes.item(i).innerHTML == '') {
+                occurencies++;
+            }
+        }
+        return occurencies;
+    }
+
     randomChoice() {
 
-        let uinput = "0";
+        let findABoxEmpty = false;
 
-        while (uinput == '0') {
+        while (findABoxEmpty == false) {
 
-            let emptyBox = undefined;
-            for (let i = 0; i < 9; i++) {
-                if (this.gridBoxes.item(i).innerHTML == '') {
-                    emptyBox = 1;
-                    console.log('je trouve des cases vides')
-                }
-            }
-
-            if (emptyBox == 1) {
+            if (this.countBoxEmpty()) {
                 let random = this.getRandomInteger()
                 if (this.gridBoxes.item(random).innerHTML == '') {
-                    this.gridBoxes.item(random).innerHTML = uinput = 'O';
+                    this.drawTheSymbolInTheBox(this.gridBoxes.item(random, "computer"));
+                    findABoxEmpty = true;
                 }
             } else {
-                uinput = 'O';
+                findABoxEmpty = true;
             }
 
         }
