@@ -6,6 +6,7 @@ class TicTacToe {
         this.buttonRestart = document.getElementById("restart");
         this.location = document.location;
         this.turn = "1";
+        this.possiblities = [0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 3, 6, 1, 4, 7, 2, 5, 8, 0, 4, 8, 2, 4, 6];
 
     }
 
@@ -15,19 +16,12 @@ class TicTacToe {
 
         this.restartGame();
 
-        this.test();
-
     }
 
+    getRandomInteger() {
 
-    test(){
-        var arr = new Array(3);
-            for (var i = 0; i < 3; i++) {
-                arr[i] = new Array(3);
-                for (var j = 0; j < 3; j++)
-                    arr[i][j] = (i * 3) + j ;
-        }
-        console.log(arr)
+        return Math.floor(Math.random() * Math.floor(9));
+
     }
 
     playerTouchGridBoxes() {
@@ -49,15 +43,18 @@ class TicTacToe {
 
     checkWinner() {
 
-        let possiblities = [0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 3, 6, 1, 4, 7, 2, 5, 8, 0, 4, 8, 2, 4, 6];
 
-        for (var i = 0; i < 24; i += 3) {
+        for (let i = 0; i < 24; i += 3) {
 
-            if (this.gridBoxes.item(possiblities[i]).innerHTML == 'X' && this.gridBoxes.item(possiblities[i + 1]).innerHTML == 'X' && this.gridBoxes.item(possiblities[i + 2]).innerHTML == 'X') {
+            if (this.gridBoxes.item(this.possiblities[i]).innerHTML == 'X' &&
+                this.gridBoxes.item(this.possiblities[i + 1]).innerHTML == 'X' &&
+                this.gridBoxes.item(this.possiblities[i + 2]).innerHTML == 'X') {
                 console.log("YES !")
             }
 
-            if (this.gridBoxes.item(possiblities[i]).innerHTML == 'O' && this.gridBoxes.item(possiblities[i + 1]).innerHTML == 'O' && this.gridBoxes.item(possiblities[i + 2]).innerHTML == 'O') {
+            if (this.gridBoxes.item(this.possiblities[i]).innerHTML == 'O' &&
+                this.gridBoxes.item(this.possiblities[i + 1]).innerHTML == 'O' &&
+                this.gridBoxes.item(this.possiblities[i + 2]).innerHTML == 'O') {
                 console.log("NOPE !")
             }
 
@@ -73,8 +70,8 @@ class TicTacToe {
                 box.innerHTML = "X"
                 console.log("Le joueur à jouer !")
                 this.checkWinner()
-                this.logicComputer(box.idIndex);
-
+                this.logicComputer();
+                
             }
 
             else {
@@ -91,66 +88,75 @@ class TicTacToe {
     }
 
 
-    logicComputer(boxId) {
-        let turn = "this.turn" + this.turn + "(" + boxId + ")";
-        eval(turn);
-        this.turn++;
+    logicComputer() {
+        let CompleteARow = "O"
+        let BreakPlayerRow = "X"
+
+        
+        this.completeRow(CompleteARow);
+        this.completeRow(BreakPlayerRow);
+        this.randomChoice();
     }
 
-    checkNumberInArray(array, number) {
-        if (array.find(element => element == number)) {
-            return true
+    completeRow(symbol) {
+
+        for (let i = 0; i < 24; i += 3) {
+
+            for (let j = 0; j < 3; j++) {
+
+                for (let k = 0; k < 3; k++) {
+                    
+                    if (j != k &&
+                        this.gridBoxes.item(this.possiblities[i + j]).innerHTML == symbol &&
+                        this.gridBoxes.item(this.possiblities[i + k]).innerHTML == symbol) {
+
+                        for (let l = 0; l < 3; l++) {
+
+                            if (l != j && l != k &&
+                                this.gridBoxes.item(this.possiblities[i + l]).innerHTML == '') {
+
+                                this.gridBoxes.item(this.possiblities[i + l]).innerHTML = 'O';
+                                return true;
+
+                            }
+                        }
+
+                    } else {
+                        console.log('nope!')
+                        return false;
+                        
+                        
+
+                    }
+                }
+            }
         }
     }
 
-    turn1(numberOfTheBox) {
+    randomChoice() {
 
-        if (this.checkNumberInArray([0, 2, 6, 8], numberOfTheBox) || numberOfTheBox == 0) {
+        let uinput = "0";
 
-            this.drawTheSymbolInTheBox(this.gridBoxes.item(4), "computer");
+        while (uinput == '0') {
 
+            let emptyBox = undefined;
+            for (let i = 0; i < 9; i++) {
+                if (this.gridBoxes.item(i).innerHTML == '') {
+                    emptyBox = 1;
+                    console.log('je trouve des cases vides')
+                }
+            }
 
-        } else if (numberOfTheBox == 1) {
-
-            this.drawTheSymbolInTheBox(this.gridBoxes.item(2), "computer");
-
-
-        } else if (numberOfTheBox == 3) {
-
-            this.drawTheSymbolInTheBox(this.gridBoxes.item(0), "computer");
-
-
-        } else if (numberOfTheBox == 5) {
-
-            this.drawTheSymbolInTheBox(this.gridBoxes.item(8), "computer");
-
-
-        } else if (this.checkNumberInArray([7, 4], numberOfTheBox)) {
-
-            this.drawTheSymbolInTheBox(this.gridBoxes.item(6), "computer");
+            if (emptyBox == 1) {
+                let random = this.getRandomInteger()
+                if (this.gridBoxes.item(random).innerHTML == '') {
+                    this.gridBoxes.item(random).innerHTML = uinput = 'O';
+                }
+            } else {
+                uinput = 'O';
+            }
 
         }
-
-    }
-
-    turn2() {
-        console.log("Tour 2 de l'ordinateur")
-
-    }
-
-    turn3() {
-        console.log("Tour 3 de l'ordinateur")
-
-    }
-
-    turn4() {
-        console.log("Tour 4 de l'ordinateur")
-
-    }
-
-    turn5() {
-        console.log("DRAW")
-
     }
 
     restartGame() {
